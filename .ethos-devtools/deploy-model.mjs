@@ -14,7 +14,7 @@
  *   DEPLOY_TARGET — the deploy target (e.g. "simulator", "radio", etc.) (optional; The script will only run if DEPLOY_TARGET="simulator")
 */
 
-import { copyFile, access } from 'fs/promises';
+import { copyFile, access, mkdir } from 'fs/promises';
 import { join, dirname, resolve, basename } from 'path';
 import { constants } from 'fs';
 
@@ -49,6 +49,7 @@ try {
 }
 
 try {
+    await mkdir(dirname(destModel), { recursive: true });
     await copyFile(srcModel, destModel);
     console.log(`[MODEL] Copied — ${srcModel} -> ${destModel}`);
 } catch (e) {
