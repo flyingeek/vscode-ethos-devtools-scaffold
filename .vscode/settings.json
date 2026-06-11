@@ -3,7 +3,15 @@
         "app": "${{appPath}}",
         "manifest": "",
         "steps": [
-            { "script": ".ethos-devtools/deploy-sensors.mjs", "args": ["${config:ethos.simulatorsFolder}/sensors-template.json"] }
+            {
+                "script": ".ethos-devtools/deploy-model.mjs",
+                "args": ["${config:ethos.simulatorsFolder}/sim-model.bin"]
+            },
+            {
+                "script": ".ethos-devtools/deploy-sensors.mjs",
+                "args": ["${config:ethos.simulatorsFolder}/sensors.json"],
+                "env": { "ETHOS_VERSION": "${config:ethos.release}" }
+            }
         ]
     },
     "ethos.board": "X20PRO",

@@ -1,11 +1,11 @@
 /**
- * Post-deploy step: copy sensors.json to the simulator's scripts folder
+ * Post-deploy step: copy sensors.json to the simulator's folder
  * (two level above DEST_PATH), but only if sensors.json does not already exist there.
  * This allows users to edit sensors.json from the telemetry webview without worrying
  * about their changes being overwritten by subsequent deploys.
  *
- * Usage in ethosExt.deploy.steps:
- *   "docs/deploy-sensors.mjs"
+ * Usage in ethos-devtools.deploy.steps:
+ *   ".ethos-devtools/deploy-sensors.mjs"
  *
  * Environment variables provided by the deploy command:
  *   DEST_PATH   — absolute path to the deployed app folder
@@ -29,9 +29,16 @@ if (!destPath) {
     console.error('[SENSORS] — DEST_PATH is not set.');
     process.exit(1);
 }
-
+const version = process.env.ETHOS_VERSION;
+if (version && !version.startsWith("nightly")) {
+    const major = parseInt(version.split('.')[0], 10);
+    if (isNaN(major) || major < 26) {
+        console.log(`[SENSORS] Skipping — ETHOS_VERSION='${version}' is < 26`);
+        process.exit(0);
+    }
+}
 const workspaceRoot = process.env.WORKSPACE_ROOT || process.cwd();
-// .vscode/sensors.json lives at the workspace root by default
+// .vscode/sensors.json lives at the workspaceRoot/.vscode/sensors.json by default
 let srcSensors = join(workspaceRoot, '.vscode', 'sensors.json');
 if (process.argv[2]) {
     srcSensors = resolve(process.argv[2]);
