@@ -35,16 +35,12 @@ local function read()
     -- read values from internal storage
 
     -- value = storage.read("slot")
-
-    return true
 end
 
 local function write()
     -- write values from internal storage
 
     -- storage.write("slot", value)
-
-    return true
 end
 
 local function event(widget, category, value, x, y)
@@ -52,13 +48,11 @@ local function event(widget, category, value, x, y)
     -- even occurs such as a button or screen click
     print("Event received:", category, value, x, y)
 
-    return true
+    return false
 end
 
 local function wakeup(widget)
     -- this is the main loop that ethos calls every couple of ms
-
-    return
 end
 
 local function init()
